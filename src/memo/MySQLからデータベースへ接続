@@ -1,0 +1,45 @@
+■MySQLに接続する
+※mysql -h ホスト名 -u ユーザー名 -D データベース名 -p
+- -h host
+- -u user
+- -D database
+- -p password
+
+●appコンテナからdbコンテナのmysqlに接続する
+docker-compose exec app mysql -h db -u book_log -p
+
+DockerでMySQLに接続するには？
+
+Dockerコンテナ
+
+•appコンテナとdbコンテナが存在している
+appコンテナ PHP
+dbコンテナ MySQL
+
+
+■PHPからデータを登録・取得するときも、まずはMySQLに接続しよう
+（※オブジェクト指向学習前）
+
+①Mysqlに接続する
+②Mysqlに命令する
+③Mysqlとの接続を切断する
+
+PHPからMysqlを利用するときは、Mysqliを使う
+（※オブジェクト指向学習前）
+mysqli_connect('my_host','my_user','my_pasword','my_db')
+
+
+■MYSQLに接続できなかったら
+mysqli_connect()は接続に失敗した場合にFALASEを返すことを利用して　
+アプリケーションを終了させよう
+
+$link = mysqli_connect('db','book_log','pass','book_log');
+if($link){
+  echo 'ERROR:データベースに接続できません';
+  exit;
+  }
+
+MySQLの使用が完了したらMySQLとの接続を切っておこう
+mysqli_close($link)
+
+
