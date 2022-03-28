@@ -1,7 +1,9 @@
 <?php
-$todo = $_POST['todo'];
+$todo = '';
 
-if (!empty($todo)) {
+if (!empty($_POST['todo'])) {
+  $todo = $_POST['todo'];
+
   $sql = <<< EOT
   INSERT INTO test (
     todo
@@ -10,17 +12,27 @@ if (!empty($todo)) {
     )
   EOT;
   $link = mysqli_connect('db', 'book_log', 'pass', 'book_log');
+
+  $mysqliMessage = '';
+  $connectMessage = '';
+  $closeMessage = '';
+
   if (!$link) {
-    echo 'データベースの接続に失敗しました';
+    $connectMessage = 'データベースの接続に失敗しました<br />';
     exit;
   } else {
-    echo 'データベースの接続に成功しました';
+    $connectMessage = 'データベースの接続に成功しました<br />';
     $result = mysqli_query($link, $sql);
+    if (!$result) {
+      $mysqliMessage = 'データの登録に失敗しました<br />';
+    } else {
+      $mysqliMessage = 'データの登録に成功しました<br />';
+    }
   }
 
   mysqli_close($link);
+  // echo 'データベースの接続を切断しました<br />';
 }
-
 
 ?>
 
@@ -32,6 +44,11 @@ if (!empty($todo)) {
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>todoリスト</title>
+  <style>
+    ul {
+      list-style: none;
+    }
+  </style>
 </head>
 
 <body>
@@ -39,10 +56,26 @@ if (!empty($todo)) {
     <div class="title">
       <h1>TODOリスト</h1>
     </div>
-    <form action="#" method="POST">
-      <input type="text" name="todo">
-      <button type="submit">送信</button>
-    </form>
+    <div class="todoRegister">
+      <form action="#" method="POST">
+        <input type="text" name="todo">
+        <button type="submit" name="" value="">送信</button>
+        <?php if (isset($connectMessage)) : ?>
+          <p><?php echo $connectMessage ?></p>
+        <?php endif; ?>
+
+        <?php if (isset($mysqliMessage)) : ?>
+          <p><?php echo $mysqliMessage ?></p>
+        <?php endif; ?>
+      </form>
+    </div>
+    <div class="todoList">
+      <ul>
+        <?php if (isset($todo)) : ?>
+          <li><?php echo $todo ?></li>
+        <?php endif; ?>
+      </ul>
+    </div>
   </div>
 </body>
 
