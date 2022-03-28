@@ -34,7 +34,7 @@ mysqli_connect()は接続に失敗した場合にFALASEを返すことを利用�
 アプリケーションを終了させよう
 
 $link = mysqli_connect('db','book_log','pass','book_log');
-if($link){
+if(!$link){
   echo 'ERROR:データベースに接続できません';
   exit;
   }
@@ -42,4 +42,13 @@ if($link){
 MySQLの使用が完了したらMySQLとの接続を切っておこう
 mysqli_close($link)
 
+mysqli_close($link)
 
+
+
+
+CREATE TABLE test (
+    id INTEGER AUTO_INCREMENT NOT NULL PRIMARY KEY,
+    todo VARCHAR(255),
+    created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
+) DEFAULT CHARACTER SET=utf8mb4;
