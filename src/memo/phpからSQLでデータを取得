@@ -1,0 +1,14 @@
+実行した結果のデータを取得するには、mysqli_fetch_assocを使おう
+
+$link = mysqli_connect('db', 'book_log', 'pass', 'book_log');
+$sql = 'SELECT name, foucnder FROM companies'
+$results = mysqli_query($link,$sql);
+
+while($compnay = mysqli_fetch_assoc($result)){
+  echo '会社名:'.$company['name']. PHP_EOL;
+  echo '代表者名' .$company['founder'] . PHP_EOL;
+}
+
+mysqli_free_result($results);
+
+

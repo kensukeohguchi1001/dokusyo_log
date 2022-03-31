@@ -1,6 +1,11 @@
 <?php
+// 初期化
 $todo = '';
+$mysqliMessage = '';
+$connectMessage = '';
+$closeMessage = '';
 
+// 登録
 if (!empty($_POST['todo'])) {
   $todo = $_POST['todo'];
 
@@ -12,10 +17,6 @@ if (!empty($_POST['todo'])) {
     )
   EOT;
   $link = mysqli_connect('db', 'book_log', 'pass', 'book_log');
-
-  $mysqliMessage = '';
-  $connectMessage = '';
-  $closeMessage = '';
 
   if (!$link) {
     $connectMessage = 'データベースの接続に失敗しました<br />';
@@ -34,6 +35,16 @@ if (!empty($_POST['todo'])) {
   // echo 'データベースの接続を切断しました<br />';
 }
 
+// 表示処理
+$link = mysqli_connect('db', 'book_log', 'pass', 'book_log');
+$sql = 'SELECT todo, created_at FROM test;';
+$results = mysqli_query($link, $sql);
+
+while ($todoList = mysqli_fetch_assoc($results)) {
+  echo $todoList['todo'] . "<br />";
+}
+
+mysqli_close($link);
 ?>
 
 <!DOCTYPE html>
@@ -71,9 +82,9 @@ if (!empty($_POST['todo'])) {
     </div>
     <div class="todoList">
       <ul>
-        <?php if (isset($todo)) : ?>
-          <li><?php echo $todo ?></li>
-        <?php endif; ?>
+        <?php while ($todoList = mysqli_fetch_assoc($results)) : ?>
+          <li><?php var_dump($todoList) ?></li>
+        <?php endwhile; ?>
       </ul>
     </div>
   </div>
